@@ -6,4 +6,5 @@ import project.hrms.entities.concretes.User;
 
 public interface UserDao extends JpaRepository<User, Integer> {
 
+	boolean existsByEmail(String email);
 }
