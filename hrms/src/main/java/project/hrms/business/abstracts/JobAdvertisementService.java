@@ -25,7 +25,7 @@ public interface JobAdvertisementService {
 	
 	DataResult<List<JobAdvertisementDto>> getAllSortByDate(boolean sortByDate);
 	
-	DataResult<List<JobAdvertisement>> getByStatusOfActive(boolean status);
+	DataResult<List<JobAdvertisementDto>> getByStatusOfActive(boolean status);
 	
 	Result changeStatus(int id,boolean status);
 }

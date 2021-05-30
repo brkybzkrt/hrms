@@ -64,7 +64,7 @@ public class JobAdvertisementsController {
 	}
 	
 	@GetMapping("getByStatusOfActive")
-	public DataResult<List<JobAdvertisement>> getByStatusOfActive(boolean status){
+	public DataResult<List<JobAdvertisementDto>> getByStatusOfActive(boolean status){
 		
 		return this.jobAdvertisementService.getByStatusOfActive(status);
 	}

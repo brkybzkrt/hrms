@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import project.hrms.core.converter.JobAdvertisementConverter;
 import project.hrms.core.utilities.results.DataResult;
+import project.hrms.core.utilities.results.ErrorDataResult;
 import project.hrms.business.abstracts.JobAdvertisementService;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.core.utilities.results.SuccessDataResult;
@@ -78,10 +79,32 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	}
 
 	@Override
-	public DataResult<List<JobAdvertisement>> getByStatusOfActive(boolean status) {
+	public DataResult<List<JobAdvertisementDto>> getByStatusOfActive(boolean status) {
 		
+		boolean activeStatus = false;
+		for(JobAdvertisementDto jobAdvertisementDao:this.jobAdvertisementsConverter.entitiesToDto(this.jobAdvertisementDao.findAll()))
+		{
+			
+			if(jobAdvertisementDao.isStatusOfActive()==status) {
+				
+				activeStatus=false;
+				
+			}
+			else {
+				activeStatus=true;
+				
+			}
+		}
 		
-		return new SuccessDataResult<List<JobAdvertisement>>( this.jobAdvertisementDao.getByStatusOfActive(status));
+		if(activeStatus==true) {
+			return new SuccessDataResult<List<JobAdvertisementDto>>(this.jobAdvertisementsConverter.entitiesToDto(this.jobAdvertisementDao.getByStatusOfActive(activeStatus)));
+			
+		}
+		else {
+			
+			return new ErrorDataResult<List<JobAdvertisementDto>>(null);
+		}
+		
 	}
 
 	@Override
