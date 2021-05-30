@@ -17,7 +17,7 @@ import project.hrms.entities.concretes.JobPosition;
 
 
 @RestController
-@RequestMapping("/jobPositions/api")
+@RequestMapping("/api/jobPositions")
 public class JobPositionsController {
 
 	

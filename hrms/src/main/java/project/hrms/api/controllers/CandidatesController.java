@@ -15,7 +15,7 @@ import project.hrms.core.utilities.results.Result;
 import project.hrms.entities.concretes.Candidate;
 
 @RestController
-@RequestMapping("/candidates/api")
+@RequestMapping("/api/candidates")
 public class CandidatesController {
 
 	

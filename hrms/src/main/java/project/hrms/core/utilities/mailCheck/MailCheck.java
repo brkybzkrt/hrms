@@ -27,10 +27,11 @@ public class MailCheck {
 	
 	
 	
-	public boolean checkEmailAddress(String email,String company_name) {
+	public boolean checkEmailAddress(String email,String webAdress) {
 		
 		
-		Pattern check = Pattern.compile("[a-zA-Z]{2,}@"+company_name+".com");
+		
+		Pattern check = Pattern.compile("[a-zA-Z]{2,}@"+webAdress);
 		Matcher kontrol = check.matcher(email);
 		
 		if(kontrol.matches()) {
