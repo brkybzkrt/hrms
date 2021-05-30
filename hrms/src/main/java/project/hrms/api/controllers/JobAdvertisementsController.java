@@ -51,7 +51,7 @@ public class JobAdvertisementsController {
 	}
 	
 	@GetMapping("getByEmployerName")
-	public DataResult<List<JobAdvertisementDto>> getByEmployer_ompanyName(@RequestParam String companyName){
+	public DataResult<List<JobAdvertisementDto>> getByEmployer_CompanyName(@RequestParam String companyName){
 		return this.jobAdvertisementService.getByEmployer_CompanyName(companyName);
 		
 	}

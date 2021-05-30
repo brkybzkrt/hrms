@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import net.bytebuddy.asm.Advice.This;
+
 import project.hrms.core.converter.JobAdvertisementConverter;
 import project.hrms.core.utilities.results.DataResult;
 import project.hrms.business.abstracts.JobAdvertisementService;
