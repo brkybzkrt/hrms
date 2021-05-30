@@ -57,8 +57,9 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	}
 
 	@Override
-	public DataResult<List<JobAdvertisement>> getByEmployerId(int id) {
-		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.getByEmployerId(id));
+	public DataResult<List<JobAdvertisementDto>> getByEmployer_CompanyName(String companyName) {
+		return new SuccessDataResult<List<JobAdvertisementDto>> (this.jobAdvertisementsConverter.entitiesToDto(this.jobAdvertisementDao.getByEmployer_CompanyName(companyName)));
+				
 	}
 
 	@Override

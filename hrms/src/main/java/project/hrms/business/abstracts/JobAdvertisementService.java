@@ -21,7 +21,7 @@ public interface JobAdvertisementService {
 	DataResult<List<JobAdvertisement>> getAllSortedBySalary(boolean sortType);
 	
 	
-	DataResult<List<JobAdvertisement>> getByEmployerId(int id);
+	DataResult<List<JobAdvertisementDto>> getByEmployer_CompanyName(String companyName);
 	
 	DataResult<List<JobAdvertisementDto>> getAllSortByDate(boolean sortByDate);
 	
