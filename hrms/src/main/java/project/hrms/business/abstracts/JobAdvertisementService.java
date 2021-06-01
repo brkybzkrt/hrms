@@ -28,4 +28,10 @@ public interface JobAdvertisementService {
 	DataResult<List<JobAdvertisementDto>> getByStatusOfActive(boolean status);
 	
 	Result changeStatus(int id,boolean status);
+	
+	
+	
+	
+	
+	
 }

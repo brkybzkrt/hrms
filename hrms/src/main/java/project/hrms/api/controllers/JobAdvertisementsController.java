@@ -27,7 +27,10 @@ public class JobAdvertisementsController {
 	
 	private JobAdvertisementService jobAdvertisementService;
 	
-
+	
+	
+	
+	
 	@Autowired
 	public JobAdvertisementsController(JobAdvertisementService jobAdvertisementService,JobAdvertisementConverter jobAdvertisementsConverter) {
 		super();
@@ -84,5 +87,7 @@ public class JobAdvertisementsController {
 		return this.jobAdvertisementService.getAllSortByDate(sortByDate);
 		
 	}
+	
+	
 	
 }

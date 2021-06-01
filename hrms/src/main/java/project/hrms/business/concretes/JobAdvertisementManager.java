@@ -52,8 +52,7 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	public DataResult<List<JobAdvertisementDto>> getAll() {
 		
 		
-	return	new SuccessDataResult<List<JobAdvertisementDto>>(this.jobAdvertisementsConverter.entitiesToDto(this.jobAdvertisementDao.findAll()));
-		
+	return new SuccessDataResult<List<JobAdvertisementDto>>(this.jobAdvertisementDao.getAllStatusOfActive());
 		
 	}
 
@@ -140,6 +139,9 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		
 		
 	}
+
+
+	
 
 
 	
