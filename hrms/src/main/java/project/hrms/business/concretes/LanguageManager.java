@@ -2,6 +2,7 @@ package project.hrms.business.concretes;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project.hrms.business.abstracts.LanguageService;
@@ -18,6 +19,12 @@ public class LanguageManager implements LanguageService{
 
 	private LanguageDao languageDao;
 	
+	@Autowired
+	public LanguageManager(LanguageDao languageDao) {
+		super();
+		this.languageDao = languageDao;
+	}
+
 	@Override
 	public Result add(Language language) {
 		this.languageDao.save(language);

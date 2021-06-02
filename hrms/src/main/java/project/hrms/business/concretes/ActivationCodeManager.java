@@ -4,6 +4,7 @@ package project.hrms.business.concretes;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project.hrms.business.abstracts.ActivationCodeService;
@@ -23,7 +24,7 @@ public class ActivationCodeManager implements ActivationCodeService {
 	
 	
 	
-	
+	@Autowired
 	public ActivationCodeManager(ActivationCodeDao activationCodeDao) {
 		super();
 		this.activationCodeDao = activationCodeDao;

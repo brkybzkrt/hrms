@@ -9,34 +9,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import project.hrms.business.abstracts.CvService;
+import project.hrms.business.abstracts.EducationService;
 import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.Result;
-import project.hrms.entities.concretes.Cv;
+import project.hrms.entities.concretes.Education;
+
 
 @RestController
-@RequestMapping("/api/cvies")
-public class CviesController {
+@RequestMapping("/api/educations")
+public class EducationsController {
 
-	private CvService cvService;
-
+	private EducationService educationService;
+	
 	@Autowired
-	public CviesController(CvService cvService) {
+	public EducationsController(EducationService educationService) {
 		super();
-		this.cvService = cvService;
+		this.educationService = educationService;
 	}
+
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody Cv cv) {
-		return this.cvService.add(cv);
+	public Result add(@RequestBody Education education) {
+		
+		
+		return this.educationService.add(education);
 		
 	}
 	
-	@GetMapping("/getAll")
 	
-	public DataResult<List<Cv>> getAll(){
+	@GetMapping("/getAll")
+	public DataResult<List<Education>> getAll() {
 		
-		return this.cvService.getAll();
-		
+		return this.educationService.getAll();
 	}
 }

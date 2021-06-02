@@ -2,6 +2,7 @@ package project.hrms.business.concretes;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project.hrms.business.abstracts.EducationService;
@@ -17,6 +18,8 @@ public class EducationManager implements EducationService{
 
 	
 	private EducationDao educationDao;
+	
+	@Autowired
 	public EducationManager(EducationDao educationDao) {
 		super();
 		this.educationDao = educationDao;

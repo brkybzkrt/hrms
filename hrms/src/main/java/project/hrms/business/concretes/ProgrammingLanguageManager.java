@@ -2,6 +2,7 @@ package project.hrms.business.concretes;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project.hrms.business.abstracts.ProgrammingLanguageService;
@@ -17,6 +18,8 @@ import project.hrms.entities.concretes.ProgrammingLanguage;
 public class ProgrammingLanguageManager implements ProgrammingLanguageService{
 
 	private ProgrammingLanguageDao programmingLanguageDao;
+	
+	@Autowired
 	public ProgrammingLanguageManager(ProgrammingLanguageDao programmingLanguageDao) {
 		super();
 		this.programmingLanguageDao = programmingLanguageDao;

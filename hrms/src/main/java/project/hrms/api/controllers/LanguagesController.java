@@ -9,34 +9,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import project.hrms.business.abstracts.CvService;
+import project.hrms.business.abstracts.LanguageService;
 import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.Result;
-import project.hrms.entities.concretes.Cv;
+import project.hrms.entities.concretes.Language;
 
 @RestController
-@RequestMapping("/api/cvies")
-public class CviesController {
+@RequestMapping("/api/languages")
+public class LanguagesController {
 
-	private CvService cvService;
+	private LanguageService languageService;
 
 	@Autowired
-	public CviesController(CvService cvService) {
+	public LanguagesController(LanguageService languageService) {
 		super();
-		this.cvService = cvService;
+		this.languageService = languageService;
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody Cv cv) {
-		return this.cvService.add(cv);
+	public Result add(@RequestBody Language language) {
 		
+		return this.languageService.add(language);
 	}
 	
-	@GetMapping("/getAll")
 	
-	public DataResult<List<Cv>> getAll(){
+	
+	@GetMapping("/getAll")
+	public DataResult<List<Language>> getAll() {
 		
-		return this.cvService.getAll();
-		
+		return this.languageService.getAll();
 	}
 }
