@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,6 +51,7 @@ public class JobExperience {
 	@Column(name="created_date")
 	private LocalDate createdDate;
 	
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@ManyToOne()
 	@JoinColumn(name="cv_id")
 	private Cv cv;

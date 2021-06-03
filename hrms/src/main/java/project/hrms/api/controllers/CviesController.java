@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import project.hrms.business.abstracts.CvService;
 import project.hrms.core.utilities.results.DataResult;
@@ -37,6 +39,14 @@ public class CviesController {
 	public DataResult<List<Cv>> getAll(){
 		
 		return this.cvService.getAll();
+		
+	}
+	
+	@PostMapping("/addImage")
+	public Result addImage(@RequestBody MultipartFile multipartFile,@RequestParam int cvId) {
+		
+		return this.cvService.addImage(multipartFile, cvId);
+		
 		
 	}
 }

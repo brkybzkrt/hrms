@@ -58,7 +58,7 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 
 	@Override
 	public DataResult<List<JobAdvertisementDto>> getByEmployer_CompanyName(String companyName) {
-		return new SuccessDataResult<List<JobAdvertisementDto>> (this.jobAdvertisementsConverter.entitiesToDto(this.jobAdvertisementDao.getByEmployer_CompanyName(companyName)));
+		return new SuccessDataResult<List<JobAdvertisementDto>>(this.jobAdvertisementDao.getByEmployer_CompanyName(companyName));
 				
 	}
 
@@ -110,11 +110,11 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	public Result changeStatus(int id,boolean status) {
 		JobAdvertisement job = this.jobAdvertisementDao.getById(id);
 		if(status==true) {
-			job.setStatusOfActive(false);
+			job.setStatusOfActive(true);
 			this.jobAdvertisementDao.save(job);
 		}
 		else {
-			job.setStatusOfActive(true);
+			job.setStatusOfActive(false);
 			this.jobAdvertisementDao.save(job);
 			
 		}

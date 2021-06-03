@@ -75,4 +75,12 @@ public class Cv {
 	@OneToMany(mappedBy = "cv")
 	private List<JobExperience> jobExperiences;
 	
+	
+	
+	
+	public void setGeneratedDate() {
+		
+		this.generatedDate=LocalDate.now();
+		
+	}
 }
