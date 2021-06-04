@@ -2,6 +2,8 @@ package project.hrms.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,7 @@ import project.hrms.business.abstracts.CvService;
 import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.entities.concretes.Cv;
+import project.hrms.entities.dtos.CvDto;
 
 @RestController
 @RequestMapping("/api/cvies")
@@ -29,14 +32,14 @@ public class CviesController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody Cv cv) {
+	public Result add(@Valid @RequestBody Cv cv) {
 		return this.cvService.add(cv);
 		
 	}
 	
 	@GetMapping("/getAll")
 	
-	public DataResult<List<Cv>> getAll(){
+	public DataResult<List<CvDto>> getAll(){
 		
 		return this.cvService.getAll();
 		
@@ -49,4 +52,12 @@ public class CviesController {
 		
 		
 	}
+	
+	@GetMapping("/getByCandidateId")
+	public DataResult<List<CvDto>>  getByCandidateId(@RequestParam int candidateId){
+		
+		return this.cvService.getByCandidate_Id(candidateId);
+		
+	}
+	
 }

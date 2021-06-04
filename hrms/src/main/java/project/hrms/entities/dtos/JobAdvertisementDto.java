@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 
 public class JobAdvertisementDto {
 
-	private String employerName;
+	private String employerCompanyName;
 	private String jobDescription;
 	private int countOfPosition;
 	private LocalDate releaseDate;

@@ -7,12 +7,13 @@ import org.springframework.web.multipart.MultipartFile;
 import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.entities.concretes.Cv;
+import project.hrms.entities.dtos.CvDto;
 
 public interface CvService {
 
 	
 	Result add(Cv cv);
-	DataResult<List<Cv>> getAll();
-	
+	DataResult<List<CvDto>> getAll();
+	DataResult<List<CvDto>> getByCandidate_Id(int candidateId);
 	Result addImage(MultipartFile multipartFile, int cvId);
 }

@@ -10,9 +10,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
-import project.hrms.core.converter.JobAdvertisementConverter;
+
+import project.hrms.core.utilities.dtoConverter.DtoConverterService;
 import project.hrms.core.utilities.results.DataResult;
-import project.hrms.core.utilities.results.ErrorDataResult;
+
 import project.hrms.business.abstracts.JobAdvertisementService;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.core.utilities.results.SuccessDataResult;
@@ -28,13 +29,13 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 
 	
 	private JobAdvertisementDao jobAdvertisementDao;
-	private JobAdvertisementConverter jobAdvertisementsConverter; 
+	private DtoConverterService dtoConverterService; 
 	
 	@Autowired
-	public JobAdvertisementManager(JobAdvertisementDao jobAdvertisementDao,JobAdvertisementConverter jobAdvertisementsConverter) {
+	public JobAdvertisementManager(JobAdvertisementDao jobAdvertisementDao,DtoConverterService dtoConverterService) {
 		super();
 		this.jobAdvertisementDao = jobAdvertisementDao;
-		this.jobAdvertisementsConverter=jobAdvertisementsConverter;
+		this.dtoConverterService=dtoConverterService;
 		
 	}
 
@@ -52,13 +53,13 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	public DataResult<List<JobAdvertisementDto>> getAll() {
 		
 		
-	return new SuccessDataResult<List<JobAdvertisementDto>>(this.jobAdvertisementDao.getAllStatusOfActive());
+	return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter( this.jobAdvertisementDao.getByStatusOfActive(true), JobAdvertisementDto.class));
 		
 	}
 
 	@Override
 	public DataResult<List<JobAdvertisementDto>> getByEmployer_CompanyName(String companyName) {
-		return new SuccessDataResult<List<JobAdvertisementDto>>(this.jobAdvertisementDao.getByEmployer_CompanyName(companyName));
+		return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter(this.jobAdvertisementDao.getByEmployer_CompanyName(companyName), JobAdvertisementDto.class));
 				
 	}
 
@@ -68,41 +69,19 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		if(sortByDate==true) {
 			
 			Sort sort = Sort.by(Sort.Direction.DESC,"releaseDate");
-			return new SuccessDataResult<List<JobAdvertisementDto>>(this.jobAdvertisementsConverter.entitiesToDto(this.jobAdvertisementDao.findAll(sort)));
+			return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter(this.jobAdvertisementDao.findAll(sort),JobAdvertisementDto.class));
 		}
 		else {
 			
 			Sort sort = Sort.by(Sort.Direction.ASC,"releaseDate");
-			return new SuccessDataResult<List<JobAdvertisementDto>>(this.jobAdvertisementsConverter.entitiesToDto(this.jobAdvertisementDao.findAll(sort)));
+			return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter(this.jobAdvertisementDao.findAll(sort),JobAdvertisementDto.class));
 		}
 	}
 
 	@Override
-	public DataResult<List<JobAdvertisementDto>> getByStatusOfActive(boolean status) {
+	public DataResult<List<JobAdvertisementDto>> getByStatusOfActive() {
+		return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter(this.jobAdvertisementDao.getByStatusOfActive(true), JobAdvertisementDto.class));
 		
-		boolean activeStatus = false;
-		for(JobAdvertisementDto jobAdvertisementDao:this.jobAdvertisementsConverter.entitiesToDto(this.jobAdvertisementDao.findAll()))
-		{
-			
-			if(jobAdvertisementDao.isStatusOfActive()==status) {
-				
-				activeStatus=false;
-				
-			}
-			else {
-				activeStatus=true;
-				
-			}
-		}
-		
-		if(activeStatus==true) {
-			return new SuccessDataResult<List<JobAdvertisementDto>>(this.jobAdvertisementsConverter.entitiesToDto(this.jobAdvertisementDao.getByStatusOfActive(activeStatus)));
-			
-		}
-		else {
-			
-			return new ErrorDataResult<List<JobAdvertisementDto>>(null);
-		}
 		
 	}
 
@@ -123,22 +102,10 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	}
 
 
-	@Override
-	public  DataResult<List<JobAdvertisement>> getAllSortedBySalary(boolean sortType) {
-		
-		if(sortType==true) {
-			
-			Sort sort = Sort.by(Sort.Direction.DESC,"minSalary");
-			return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.findAll(sort));
-		}
-		else {
-			
-			Sort sort = Sort.by(Sort.Direction.ASC,"maxSalary");
-			return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementDao.findAll(sort));
-		}
+	
 		
 		
-	}
+	
 
 
 	

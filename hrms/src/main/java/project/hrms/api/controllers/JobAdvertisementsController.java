@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import project.hrms.business.abstracts.JobAdvertisementService;
-import project.hrms.core.converter.JobAdvertisementConverter;
+
 import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.entities.concretes.JobAdvertisement;
@@ -32,7 +32,7 @@ public class JobAdvertisementsController {
 	
 	
 	@Autowired
-	public JobAdvertisementsController(JobAdvertisementService jobAdvertisementService,JobAdvertisementConverter jobAdvertisementsConverter) {
+	public JobAdvertisementsController(JobAdvertisementService jobAdvertisementService) {
 		super();
 		this.jobAdvertisementService = jobAdvertisementService;
 		
@@ -67,17 +67,12 @@ public class JobAdvertisementsController {
 	}
 	
 	@GetMapping("getByStatusOfActive")
-	public DataResult<List<JobAdvertisementDto>> getByStatusOfActive(boolean status){
+	public DataResult<List<JobAdvertisementDto>> getByStatusOfActive(){
 		
-		return this.jobAdvertisementService.getByStatusOfActive(status);
+		return this.jobAdvertisementService.getByStatusOfActive();
 	}
 	
-	@GetMapping("getAllSortedBySalary")
 	
-	DataResult<List<JobAdvertisement>> getAllSortedBySalary(boolean sortType){
-		
-		return this.jobAdvertisementService.getAllSortedBySalary(sortType);
-	}
 	
 	
 	@GetMapping("getAllSortedByReleaseDate")

@@ -18,14 +18,14 @@ public interface JobAdvertisementService {
 	
 	DataResult<List<JobAdvertisementDto>> getAll();
 	
-	DataResult<List<JobAdvertisement>> getAllSortedBySalary(boolean sortType);
+
 	
 	
 	DataResult<List<JobAdvertisementDto>> getByEmployer_CompanyName(String companyName);
 	
 	DataResult<List<JobAdvertisementDto>> getAllSortByDate(boolean sortByDate);
 	
-	DataResult<List<JobAdvertisementDto>> getByStatusOfActive(boolean status);
+	DataResult<List<JobAdvertisementDto>> getByStatusOfActive();
 	
 	Result changeStatus(int id,boolean status);
 	
