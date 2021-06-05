@@ -83,6 +83,13 @@ public class JobAdvertisementsController {
 		
 	}
 	
+	@GetMapping("getByStatusOfActiveAndEmployer_CompanyName")
+	public DataResult<List<JobAdvertisementDto>> getByStatusOfActiveAndEmployer_CompanyName(@RequestParam("employerName") String employerName){
+		
+		return this.jobAdvertisementService.getByStatusOfActiveAndEmployer_CompanyName(true, employerName);
+		
+		
+	}
 	
 	
 }

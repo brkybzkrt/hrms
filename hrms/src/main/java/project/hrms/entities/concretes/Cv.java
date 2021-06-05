@@ -77,10 +77,5 @@ public class Cv {
 	
 	
 	
-	
-//	public void setGeneratedDate() {
-//		
-//		this.generatedDate=LocalDate.now();
-//		
-//	}
+    
 }

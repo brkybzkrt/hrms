@@ -1,6 +1,7 @@
 package project.hrms.business.concretes;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -43,6 +44,7 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	@Override
 	public Result add(JobAdvertisement jobAdvertisement) {
 		
+		jobAdvertisement.setReleaseDate(LocalDate.now());
 		
 		this.jobAdvertisementDao.save(jobAdvertisement);
 		return new SuccessResult("kayıt başarılı"); 
@@ -99,6 +101,16 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		}
 		
 		return new SuccessResult(); 
+	}
+
+
+	@Override
+	public DataResult<List<JobAdvertisementDto>> getByStatusOfActiveAndEmployer_CompanyName(boolean status,
+			String employerName) {
+		
+		return new SuccessDataResult<List<JobAdvertisementDto>> (this.dtoConverterService.dtoConverter(this.jobAdvertisementDao.getByStatusOfActiveAndEmployer_CompanyName(true, employerName), JobAdvertisementDto.class));
+		
+		
 	}
 
 

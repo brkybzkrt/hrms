@@ -18,7 +18,7 @@ public interface JobAdvertisementService {
 	
 	DataResult<List<JobAdvertisementDto>> getAll();
 	
-
+	DataResult<List<JobAdvertisementDto>> getByStatusOfActiveAndEmployer_CompanyName(boolean status,String employerName);
 	
 	
 	DataResult<List<JobAdvertisementDto>> getByEmployer_CompanyName(String companyName);
