@@ -21,8 +21,14 @@ public class JobAdvertisementDto {
 	private String jobDescription;
 	private int countOfPosition;
 	private LocalDate releaseDate;
-	
+	private String jobPositionName;
+	private String cityName;
 	private LocalDate deadlineDate;
+	private String jobTypeName;
+	private String workingTimeName;
+	
+	@JsonIgnore
+	private boolean jobAdvertisementActivationByEmployeeIsConfirmed;
 	
 	@JsonIgnore
 	private boolean statusOfActive;

@@ -10,13 +10,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Entity
 @Table(name="job_advertisements")
@@ -67,4 +69,22 @@ public class JobAdvertisement {
 	@ManyToOne
 	@JoinColumn(name="employer_id")
 	private Employer employer;
+	
+	
+	
+	
+	@ManyToOne
+	@JoinColumn(name="job_type_id")
+	private JobType jobType;
+	
+	
+	@ManyToOne
+	@JoinColumn(name="working_time_id")
+	private WorkingTime workingTime;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "jobAdvertisement")
+	private JobAdvertisementActivationByEmployee jobAdvertisementActivationByEmployee; 
+	
+	
 }

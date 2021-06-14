@@ -61,7 +61,7 @@ public class EmployerManager implements EmployerService {
 		}
 		else {
 			
-			if(this.mailControl.checkEmailAddress(employer.getEmail(), employer.getCompanyName())) {
+			if(this.mailControl.checkEmailAddress(employer.getEmail(), employer.getWebAddress())) {
 				
 				this.employerDao.save(employer);
 				this.emailVerificationService.verification(employer);

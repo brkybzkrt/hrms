@@ -29,6 +29,7 @@ import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.ErrorDataResult;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.entities.concretes.JobAdvertisement;
+import project.hrms.entities.dtos.AddJobAdvertisementDto;
 import project.hrms.entities.dtos.JobAdvertisementDto;
 
 @CrossOrigin

@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -26,12 +27,15 @@ import lombok.NoArgsConstructor;
 
 public class Candidate extends User {
 
+	@NotBlank
 	@Column(name="first_name")
 	private String firstName;
 	
+	@NotBlank
 	@Column(name="last_name")
 	private String lastName;
 
+	@NotBlank
 	@Size(min = 11,max= 11)
 	@Column(name="nationality_id")
 	private String nationalityId;

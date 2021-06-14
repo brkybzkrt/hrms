@@ -19,8 +19,11 @@ import project.hrms.business.abstracts.JobAdvertisementService;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.core.utilities.results.SuccessDataResult;
 import project.hrms.core.utilities.results.SuccessResult;
+import project.hrms.dataAccess.abstracts.JobAdvertisementActivationByEmployeeDao;
 import project.hrms.dataAccess.abstracts.JobAdvertisementDao;
 import project.hrms.entities.concretes.JobAdvertisement;
+import project.hrms.entities.concretes.JobAdvertisementActivationByEmployee;
+import project.hrms.entities.dtos.AddJobAdvertisementDto;
 import project.hrms.entities.dtos.JobAdvertisementDto;
 
 
@@ -30,13 +33,15 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 
 	
 	private JobAdvertisementDao jobAdvertisementDao;
+	private JobAdvertisementActivationByEmployeeDao jobAdvertisementActivationByEmployeeDao;
 	private DtoConverterService dtoConverterService; 
 	
 	@Autowired
-	public JobAdvertisementManager(JobAdvertisementDao jobAdvertisementDao,DtoConverterService dtoConverterService) {
+	public JobAdvertisementManager(JobAdvertisementDao jobAdvertisementDao,DtoConverterService dtoConverterService,JobAdvertisementActivationByEmployeeDao jobAdvertisementActivationByEmployeeDao) {
 		super();
 		this.jobAdvertisementDao = jobAdvertisementDao;
 		this.dtoConverterService=dtoConverterService;
+		this.jobAdvertisementActivationByEmployeeDao=jobAdvertisementActivationByEmployeeDao;
 		
 	}
 
@@ -46,7 +51,19 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		
 		jobAdvertisement.setReleaseDate(LocalDate.now());
 		
-		this.jobAdvertisementDao.save(jobAdvertisement);
+
+		
+		JobAdvertisement ja= this.jobAdvertisementDao.save(jobAdvertisement);
+		
+		
+		JobAdvertisementActivationByEmployee jAE= new JobAdvertisementActivationByEmployee();
+		
+		jAE.setJobAdvertisement(ja);
+		jAE.setIsConfirmed(false);
+		
+		this.jobAdvertisementActivationByEmployeeDao.save(jAE);
+		
+		
 		return new SuccessResult("kayıt başarılı"); 
 	}
 	
@@ -55,7 +72,7 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	public DataResult<List<JobAdvertisementDto>> getAll() {
 		
 		
-	return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter( this.jobAdvertisementDao.getByStatusOfActive(true), JobAdvertisementDto.class));
+	return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter( this.jobAdvertisementDao.getByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActive(true,true), JobAdvertisementDto.class));
 		
 	}
 

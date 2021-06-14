@@ -9,6 +9,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -28,10 +29,12 @@ public class User {
 	@Column(name="id")
 	private int id;
 	
+	@NotBlank
 	@Email
 	@Column(name="email")
 	private String email;
 	
+	@NotBlank
 	@Size(max = 8,min=8)
 	@Column(name="password")
 	private String password;
