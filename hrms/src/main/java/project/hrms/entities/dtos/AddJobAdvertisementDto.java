@@ -29,6 +29,10 @@ public class AddJobAdvertisementDto {
 	private int countOfPosition;
 	private int workingTimeId;
 	
+	private LocalDate deadlineDate;
+	
+	@JsonIgnore
+	private boolean statusOfActive;
 	private LocalDate releaseDate;
 	private String jobDescription;
 	

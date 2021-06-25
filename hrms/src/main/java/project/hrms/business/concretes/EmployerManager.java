@@ -15,9 +15,10 @@ import project.hrms.core.utilities.results.ErrorResult;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.core.utilities.results.SuccessDataResult;
 import project.hrms.core.utilities.results.SuccessResult;
+import project.hrms.dataAccess.abstracts.ConfirmedEmployerByEmployeeDao;
 import project.hrms.dataAccess.abstracts.EmployerDao;
 import project.hrms.dataAccess.abstracts.UserDao;
-
+import project.hrms.entities.concretes.ConfirmedEmployerByEmployee;
 import project.hrms.entities.concretes.Employer;
 
 @Service
@@ -27,16 +28,17 @@ public class EmployerManager implements EmployerService {
 	private UserDao userDao;
 	private MailControl mailControl;
 	private EmailVerificationService emailVerificationService; 
-	
+	private ConfirmedEmployerByEmployeeDao confirmedEmployerByEmployeeDao; 
 	
 	
 	@Autowired
-	public EmployerManager(EmployerDao employerDao,UserDao userDao,MailControl mailControl,EmailVerificationService emailVerificationService) {
+	public EmployerManager(EmployerDao employerDao,UserDao userDao,MailControl mailControl,EmailVerificationService emailVerificationService,ConfirmedEmployerByEmployeeDao confirmedEmployerByEmployeeDao) {
 		super();
 		this.employerDao = employerDao;
 		this.userDao=userDao;
 		this.mailControl=mailControl;
 		this.emailVerificationService=emailVerificationService;
+		this.confirmedEmployerByEmployeeDao=confirmedEmployerByEmployeeDao;
 		
 	}
 
@@ -62,9 +64,15 @@ public class EmployerManager implements EmployerService {
 		else {
 			
 			if(this.mailControl.checkEmailAddress(employer.getEmail(), employer.getWebAddress())) {
-				
-				this.employerDao.save(employer);
 				this.emailVerificationService.verification(employer);
+				 this.employerDao.save(employer);
+				
+				 ConfirmedEmployerByEmployee confirmedEmployerByEmployee= new ConfirmedEmployerByEmployee();
+				 
+				 confirmedEmployerByEmployee.setEmployer(employer);
+				 confirmedEmployerByEmployee.setConfirmed(false);
+				 this.confirmedEmployerByEmployeeDao.save(confirmedEmployerByEmployee);
+				 
 				return new SuccessResult("ekleme başarılı");
 			}
 			else {
@@ -76,6 +84,41 @@ public class EmployerManager implements EmployerService {
 		
 		
 		
+	}
+
+
+
+	@Override
+	public Result update(int employerId, Employer employer) {
+		
+		if(this.employerDao.existsById(employerId)) {
+			
+			Employer updatedEmployer= this.employerDao.getOne(employerId);
+			updatedEmployer.setCompanyName(employer.getCompanyName());
+			updatedEmployer.setEmail(employer.getEmail());
+			updatedEmployer.setConfirmedEmployerByEmployee(employer.getConfirmedEmployerByEmployee());
+			updatedEmployer.setPhoneNumber(employer.getPhoneNumber());
+			updatedEmployer.setWebAddress(employer.getWebAddress());
+			
+			
+			this.employerDao.save(updatedEmployer);
+			return new SuccessResult("Güncelleme başarılı");
+		}
+		
+		else {
+			
+			return new ErrorResult("Kayıt bulunamadı");
+		}
+		
+		
+		
+	}
+
+
+
+	@Override
+	public DataResult<Employer> getById(int id) {
+	return new SuccessDataResult<Employer>(this.employerDao.getOne(id));
 	}
 
 }

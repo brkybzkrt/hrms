@@ -52,9 +52,9 @@ public class JobAdvertisementsController {
 	} 
 	
 	@PostMapping("add")
- 	public ResponseEntity<?> add(@Valid @RequestBody JobAdvertisement jobAdvertisement) {
+ 	public ResponseEntity<?> add(@Valid @RequestBody AddJobAdvertisementDto AddJobAdvertisementDto) {
  		
- 		return ResponseEntity.ok( this.jobAdvertisementService.add(jobAdvertisement));
+ 		return ResponseEntity.ok( this.jobAdvertisementService.add(AddJobAdvertisementDto));
  	}
 	
 	
@@ -103,6 +103,19 @@ public class JobAdvertisementsController {
 		
 		
 	}
+	
+	@GetMapping("getAllByPageable")
+	public DataResult<List<JobAdvertisementDto>> findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActive(
+			@RequestParam("pageNo") int pageNo,@RequestParam("pageSize")  int pageSize){
+		
+		return this.jobAdvertisementService.findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActive(pageNo, pageSize);
+	} 
+	
+	
+	
+	
+	
+	
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

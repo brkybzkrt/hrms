@@ -13,6 +13,7 @@ public interface CvService {
 
 	
 	Result add(Cv cv);
+	Result update(int cvId,Cv cv);
 	DataResult<List<CvDto>> getAll();
 	DataResult<List<CvDto>> getByCandidate_Id(int candidateId);
 	Result addImage(MultipartFile multipartFile, int cvId);

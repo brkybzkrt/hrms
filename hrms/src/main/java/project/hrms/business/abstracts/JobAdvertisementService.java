@@ -3,7 +3,7 @@ package project.hrms.business.abstracts;
 
 import java.util.List;
 
-
+import org.springframework.data.domain.Pageable;
 
 import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.Result;
@@ -14,7 +14,9 @@ import project.hrms.entities.dtos.JobAdvertisementDto;
 
 public interface JobAdvertisementService {
 
-	Result add(JobAdvertisement jobAdvertisement);
+	Result add(AddJobAdvertisementDto addJobAdvertisementDto);
+	
+	DataResult<List<JobAdvertisementDto>> findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActive(int pageNo, int pageSize);
 	
 	DataResult<List<JobAdvertisementDto>> getAll();
 	

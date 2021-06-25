@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,8 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import project.hrms.business.abstracts.EmployerService;
 import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.ErrorDataResult;
-
-
+import project.hrms.core.utilities.results.Result;
 import project.hrms.entities.concretes.Employer;
 
 @CrossOrigin
@@ -59,7 +60,17 @@ public class EmployersController {
 	}
 	
 	
+	@PutMapping("/updateEmployer")
+	public ResponseEntity<?> update(@RequestParam int employerId,@RequestBody Employer employer){
+		return ResponseEntity.ok(this.employerService.update(employerId,employer));
+		
+	}
 	
+	@GetMapping("/getById")
+	public ResponseEntity<?> getById(@RequestParam int id){
+		
+		return ResponseEntity.ok(this.employerService.getById(id));
+	}
 	
 	
 		@ExceptionHandler(MethodArgumentNotValidException.class)

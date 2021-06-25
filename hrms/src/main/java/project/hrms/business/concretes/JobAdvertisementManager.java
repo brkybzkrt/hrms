@@ -7,6 +7,8 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +16,12 @@ import org.springframework.stereotype.Service;
 
 import project.hrms.core.utilities.dtoConverter.DtoConverterService;
 import project.hrms.core.utilities.results.DataResult;
-
+import project.hrms.core.utilities.results.ErrorResult;
 import project.hrms.business.abstracts.JobAdvertisementService;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.core.utilities.results.SuccessDataResult;
 import project.hrms.core.utilities.results.SuccessResult;
+import project.hrms.dataAccess.abstracts.ConfirmedEmployerByEmployeeDao;
 import project.hrms.dataAccess.abstracts.JobAdvertisementActivationByEmployeeDao;
 import project.hrms.dataAccess.abstracts.JobAdvertisementDao;
 import project.hrms.entities.concretes.JobAdvertisement;
@@ -35,36 +38,50 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	private JobAdvertisementDao jobAdvertisementDao;
 	private JobAdvertisementActivationByEmployeeDao jobAdvertisementActivationByEmployeeDao;
 	private DtoConverterService dtoConverterService; 
+	private ConfirmedEmployerByEmployeeDao confirmedEmployerByEmployeeDao;
 	
 	@Autowired
-	public JobAdvertisementManager(JobAdvertisementDao jobAdvertisementDao,DtoConverterService dtoConverterService,JobAdvertisementActivationByEmployeeDao jobAdvertisementActivationByEmployeeDao) {
+	public JobAdvertisementManager(JobAdvertisementDao jobAdvertisementDao,DtoConverterService dtoConverterService,JobAdvertisementActivationByEmployeeDao jobAdvertisementActivationByEmployeeDao,ConfirmedEmployerByEmployeeDao confirmedEmployerByEmployeeDao) {
 		super();
 		this.jobAdvertisementDao = jobAdvertisementDao;
 		this.dtoConverterService=dtoConverterService;
 		this.jobAdvertisementActivationByEmployeeDao=jobAdvertisementActivationByEmployeeDao;
+		this.confirmedEmployerByEmployeeDao=confirmedEmployerByEmployeeDao;
 		
 	}
 
 	
 	@Override
-	public Result add(JobAdvertisement jobAdvertisement) {
+	public Result add(AddJobAdvertisementDto addJobAdvertisementDto) {
 		
-		jobAdvertisement.setReleaseDate(LocalDate.now());
-		
+		int getEmployerId= addJobAdvertisementDto.getEmployerId();
 
+		if(this.confirmedEmployerByEmployeeDao.getByEmployer_Id(getEmployerId).isConfirmed()) {
+			addJobAdvertisementDto.setReleaseDate(LocalDate.now());
+			addJobAdvertisementDto.setStatusOfActive(true);
+			
+			
+
+			
+			JobAdvertisement ja= this.jobAdvertisementDao.save((JobAdvertisement) this.dtoConverterService.dtoClassConverter(addJobAdvertisementDto, JobAdvertisement.class));
+			
+			
+			JobAdvertisementActivationByEmployee jAE= new JobAdvertisementActivationByEmployee();
+			
+			jAE.setJobAdvertisement(ja);
+			jAE.setIsConfirmed(false);
+			
+			this.jobAdvertisementActivationByEmployeeDao.save(jAE);
+			
+			
+			return new SuccessResult("iş ilanı kaydı başarılı"); 
+			
+		}
+		else {
+			
+			return new ErrorResult("Onaylanmamış iş veren");
+		}
 		
-		JobAdvertisement ja= this.jobAdvertisementDao.save(jobAdvertisement);
-		
-		
-		JobAdvertisementActivationByEmployee jAE= new JobAdvertisementActivationByEmployee();
-		
-		jAE.setJobAdvertisement(ja);
-		jAE.setIsConfirmed(false);
-		
-		this.jobAdvertisementActivationByEmployeeDao.save(jAE);
-		
-		
-		return new SuccessResult("kayıt başarılı"); 
 	}
 	
 	
@@ -129,6 +146,19 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		
 		
 	}
+
+
+	@Override
+	public DataResult<List<JobAdvertisementDto>> findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActive(
+			int pageNo, int pageSize) 
+	{
+		
+		Pageable pageable= PageRequest.of(pageNo-1, pageSize);
+		
+		return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter(this.jobAdvertisementDao.findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActive(pageable, true, true), JobAdvertisementDto.class));
+	}
+
+
 
 
 	

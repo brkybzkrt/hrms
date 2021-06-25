@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,6 +36,9 @@ public class Employer extends User {
 	@OneToMany(mappedBy = "employer")
 	private List<JobAdvertisement> jobAdvertisements;
 	
+	@JsonIgnore
+	@OneToOne(mappedBy = "employer")
+	private ConfirmedEmployerByEmployee confirmedEmployerByEmployee;
 	
 	public Employer(int id, String email,String password,String companyName, String webAddress, String phoneNumber) {
 		super(id,email,password);

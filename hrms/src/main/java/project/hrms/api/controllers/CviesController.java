@@ -5,8 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +21,7 @@ import project.hrms.core.utilities.results.Result;
 import project.hrms.entities.concretes.Cv;
 import project.hrms.entities.dtos.CvDto;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/cvies")
 public class CviesController {
@@ -58,6 +61,13 @@ public class CviesController {
 		
 		return this.cvService.getByCandidate_Id(candidateId);
 		
+	}
+	
+	
+	@PutMapping("/updateCv")
+	public Result update(@RequestParam int cvId,@RequestBody Cv cv) {
+		
+		return this.cvService.update(cvId, cv);
 	}
 	
 }

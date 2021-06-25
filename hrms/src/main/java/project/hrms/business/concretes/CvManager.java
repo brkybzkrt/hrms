@@ -1,5 +1,6 @@
 package project.hrms.business.concretes;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import project.hrms.business.abstracts.CvService;
 import project.hrms.core.utilities.cloudinary.CloudinaryService;
 import project.hrms.core.utilities.dtoConverter.DtoConverterService;
 import project.hrms.core.utilities.results.DataResult;
+import project.hrms.core.utilities.results.ErrorResult;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.core.utilities.results.SuccessDataResult;
 import project.hrms.core.utilities.results.SuccessResult;
@@ -65,6 +67,34 @@ public class CvManager implements CvService {
 	@Override
 	public DataResult<List<CvDto>> getByCandidate_Id(int candidateId) {
 		return new SuccessDataResult<List<CvDto>>(this.dtoConverterService.dtoConverter(this.cvDao.getByCandidate_Id(candidateId), CvDto.class),"cv getirildi" );
+	}
+
+	@Override
+	public Result update(int cvId, Cv cv) {
+		if(this.cvDao.existsById(cvId)) {
+			
+			Cv updateCv=this.cvDao.getOne(cvId);
+			
+			updateCv.setDescription(cv.getDescription());
+			updateCv.setGithubLink(cv.getGithubLink());
+			updateCv.setLinkedinLink(cv.getLinkedinLink());
+			
+			updateCv.setEducations(cv.getEducations());
+			updateCv.setJobExperiences(cv.getJobExperiences());
+			updateCv.setLanguages(cv.getLanguages());
+			updateCv.setProgrammingLanguages(cv.getProgrammingLanguages());
+			
+			updateCv.setLastUpdatedDate(LocalDate.now());
+			
+			this.cvDao.save(updateCv);
+			return new SuccessResult("Cv başarıyla güncellendi");
+		}
+		
+		else {
+			
+			return new ErrorResult("Cv bulunamadı");
+			
+		}
 	}
 
 	

@@ -1,7 +1,10 @@
 package project.hrms.entities.concretes;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -27,6 +30,9 @@ public class Employee extends User{
 	@Column(name="last_name")
 	private String lastName;
 	
+	
+	@OneToMany(mappedBy = "employee")
+	private List<ConfirmedEmployerByEmployee> confirmedEmployerByEmployees;
 	
 	
 	public Employee(int id, String firstName, String lastName, String email,String password) {
