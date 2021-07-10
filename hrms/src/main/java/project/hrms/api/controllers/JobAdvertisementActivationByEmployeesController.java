@@ -14,6 +14,7 @@ import project.hrms.entities.concretes.JobAdvertisementActivationByEmployee;
 
 @RestController
 @RequestMapping("/api/jobAdvertisementActivationByEmployees")
+
 public class JobAdvertisementActivationByEmployeesController {
 
 	
@@ -36,11 +37,11 @@ public class JobAdvertisementActivationByEmployeesController {
 	
 	
 	
-	@PostMapping("/add")
-	Result add(@RequestBody JobAdvertisementActivationByEmployee jobAdvertisementActivationByEmployee) {
-		return this.jobAdvertisementActivationByEmployeeService.add(jobAdvertisementActivationByEmployee);
-		
-		
-	}
-	
+//	@PostMapping("/add")
+//	Result add(@RequestBody JobAdvertisementActivationByEmployee jobAdvertisementActivationByEmployee) {
+//		return this.jobAdvertisementActivationByEmployeeService.add(jobAdvertisementActivationByEmployee);
+//		
+//		
+//	}
+//	
 }

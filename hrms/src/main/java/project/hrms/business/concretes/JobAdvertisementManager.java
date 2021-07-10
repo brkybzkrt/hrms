@@ -150,12 +150,63 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 
 	@Override
 	public DataResult<List<JobAdvertisementDto>> findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActive(
-			int pageNo, int pageSize) 
+			int pageNo, int pageSize,String cityName,String jobPositionName) 
 	{
 		
 		Pageable pageable= PageRequest.of(pageNo-1, pageSize);
+		if(cityName==null && jobPositionName==null) {
+			return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter(this.jobAdvertisementDao.findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActive(pageable, true, true), JobAdvertisementDto.class));
+			
+		}
+		else if(jobPositionName!=null && cityName==null) {
+			return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter(this.jobAdvertisementDao.findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActiveAndJobPositionNameContaining(pageable, true, true, jobPositionName), JobAdvertisementDto.class));
+		}
 		
-		return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter(this.jobAdvertisementDao.findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActive(pageable, true, true), JobAdvertisementDto.class));
+		else if(cityName!=null && jobPositionName==null){
+			return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter(this.jobAdvertisementDao.findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActiveAndCityNameContaining(pageable, true, true, cityName), JobAdvertisementDto.class));
+		}
+		
+		else {
+			
+			return new SuccessDataResult<List<JobAdvertisementDto>>(this.dtoConverterService.dtoConverter
+			(this.jobAdvertisementDao.findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActiveAndJobPositionNameContainingAndCityNameContaining(pageable, true, true, jobPositionName, cityName), JobAdvertisementDto.class));
+		}
+		
+	}
+
+
+	@Override
+	public Result update(int jobAdvertisementId,AddJobAdvertisementDto addJobAdvertisementDto) {
+		JobAdvertisement updatedJA= this.jobAdvertisementDao.getById(jobAdvertisementId);
+		
+		JobAdvertisement asd=(JobAdvertisement) this.dtoConverterService.dtoClassConverter(addJobAdvertisementDto, JobAdvertisement.class);
+		
+		updatedJA.setCity(asd.getCity());
+		updatedJA.setCountOfPosition(asd.getCountOfPosition());
+		updatedJA.setEmployer(asd.getEmployer());
+		updatedJA.setJobDescription(asd.getJobDescription());
+		updatedJA.setDeadlineDate(asd.getDeadlineDate());
+
+		updatedJA.setJobPosition(asd.getJobPosition());
+		
+		updatedJA.setJobType(asd.getJobType());
+		updatedJA.setMinSalary(asd.getMinSalary());
+		updatedJA.setMaxSalary(asd.getMaxSalary());
+		updatedJA.setWorkingTime(asd.getWorkingTime());
+		updatedJA.setReleaseDate(updatedJA.getReleaseDate());
+		
+		this.jobAdvertisementDao.save(updatedJA);
+		
+		return  new SuccessResult("İş ilanı başarıyla güncellendi");
+		
+	}
+
+
+	@Override
+	public DataResult<AddJobAdvertisementDto> getById(int id) {
+		JobAdvertisement get=this.jobAdvertisementDao.getById(id);
+	return new SuccessDataResult<AddJobAdvertisementDto>((AddJobAdvertisementDto) this.dtoConverterService.dtoClassConverter(get, AddJobAdvertisementDto.class));
+		
 	}
 
 

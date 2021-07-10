@@ -15,8 +15,14 @@ public interface JobAdvertisementDao extends JpaRepository<JobAdvertisement, Int
 	
 	JobAdvertisement getById(int id);
 	
-	List<JobAdvertisement> findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActive(Pageable pageable,boolean confirmStatus,boolean isActiveStatus); 
+	List<JobAdvertisement> findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActiveAndCityNameContaining(Pageable pageable,boolean confirmStatus,boolean isActiveStatus,String cityName);
 	
+	List<JobAdvertisement> findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActiveAndJobPositionNameContaining(Pageable pageable,boolean confirmStatus,boolean isActiveStatus,String jobPositionName);
+	
+	List<JobAdvertisement> findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActiveAndJobPositionNameContainingAndCityNameContaining
+	(Pageable pageable,boolean confirmStatus,boolean isActiveStatus,String jobPositionName,String cityname);
+	
+	List<JobAdvertisement> findAllByJobAdvertisementActivationByEmployee_IsConfirmedAndStatusOfActive(Pageable pageable,boolean confirmStatus,boolean isActiveStatus);
 	
 	List<JobAdvertisement> getByEmployer_CompanyName(String employerName);
 	
