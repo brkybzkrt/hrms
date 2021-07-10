@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import project.hrms.business.abstracts.ActivationCodeService;
@@ -31,6 +33,7 @@ public class CandidateManager implements CandidateService {
 	private UserValidService userValidService;
 	private MailControl mailControl;
 	private EmailVerificationService emailVerificationService; 
+	private PasswordEncoder passwordEncoder;
 	
 	
 	
@@ -43,6 +46,7 @@ public class CandidateManager implements CandidateService {
 		this.userValidService=userValidService;
 		this.mailControl=mailControl;
 		this.emailVerificationService=emailVerificationService;
+		this.passwordEncoder= new BCryptPasswordEncoder();
 		
 		
 	}
@@ -69,7 +73,7 @@ public class CandidateManager implements CandidateService {
 			if (this.userValidService.personIsValid(candidate)&& this.mailControl.userEmailControl(candidate.getEmail())&& !this.candidateDao.existsByNationalityId(candidate.getNationalityId())) {
 				
 				
-				
+				candidate.setPassword(this.passwordEncoder.encode(candidate.getPassword()));
 				 this.candidateDao.save(candidate);
 				 this.activationCodeService.createActivationCode(candidate);
 				this.emailVerificationService.verification(candidate);
