@@ -14,6 +14,7 @@ public interface FavoriteDao extends JpaRepository<Favorite, Integer> {
 	
 	boolean existsByJobAdvertisementId(int id);
 	
+	Favorite getOneByIdAndCandidateId(int favoriteId,int candidateId);
 	
 	
 }

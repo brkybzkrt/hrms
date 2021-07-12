@@ -13,7 +13,7 @@ public interface FavoriteService {
 	
 	Result add(FavoriteDto favoriteDto);
 	
-	Result deleteById(int favoriteId);
+	Result deleteByIdAndCandidateId(int favoriteId,int candidateId);
 	
 	DataResult<List<Favorite>> findByCandidateId(int candidateId);
 }

@@ -54,8 +54,8 @@ public class FavoriteManager implements FavoriteService{
 	}
 
 	@Override
-	public Result deleteById(int favoriteId) {
-	 Favorite deletedFavorite=	this.favoriteDao.getOne(favoriteId);
+	public Result deleteByIdAndCandidateId(int favoriteId,int candidateId) {
+	 Favorite deletedFavorite=	this.favoriteDao.getOneByIdAndCandidateId(favoriteId, candidateId);
 		
 		this.favoriteDao.delete(deletedFavorite);
 	

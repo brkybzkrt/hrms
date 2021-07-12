@@ -46,8 +46,8 @@ public class FavoritesController {
 	}
 	
 	@DeleteMapping("/delete")
-	public Result deleteById(int favoriteId) {
-		return this.favoriteService.deleteById(favoriteId);
+	public Result deleteByIdAndCandidateId(@RequestParam("favoriteId") int favoriteId,@RequestParam("candidateId") int candidateId)  {
+		return this.favoriteService.deleteByIdAndCandidateId(favoriteId, candidateId);
 		
 		
 	}
