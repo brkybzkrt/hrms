@@ -3,6 +3,7 @@ package project.hrms.api.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,9 +15,11 @@ import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.Result;
 
 import project.hrms.entities.concretes.ProgrammingLanguage;
+import project.hrms.entities.dtos.ProgrammingLanguageDto;
 
 @RestController
 @RequestMapping("/api/programmingLanguages")
+@CrossOrigin
 public class ProgrammingLanguagesController {
 
 	private ProgrammingLanguageService programmingLanguageService;
@@ -29,17 +32,17 @@ public class ProgrammingLanguagesController {
 
 
 	@PostMapping("/add")
-	public Result add(@RequestBody ProgrammingLanguage programmingLanguage) {
+	public Result add(@RequestBody ProgrammingLanguageDto programmingLanguageDto) {
 		
 		
-		return this.programmingLanguageService.add(programmingLanguage);
+		return this.programmingLanguageService.add(programmingLanguageDto);
 		
 	}
 	
 	
 	@GetMapping("/getAll")
-public DataResult<List<ProgrammingLanguage>> getAll() {
+public DataResult<List<ProgrammingLanguage>> getByCvId(int cvId) {
 		
-		return this.programmingLanguageService.getAll();
+		return this.programmingLanguageService.getByCvId( cvId);
 	}
 }

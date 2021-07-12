@@ -3,6 +3,7 @@ package project.hrms.api.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,11 +14,13 @@ import project.hrms.business.abstracts.JobExperienceService;
 import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.entities.concretes.JobExperience;
+import project.hrms.entities.dtos.JobExperienceDto;
 
 
 
 @RestController
 @RequestMapping("/api/jobExperiences")
+@CrossOrigin
 public class JobExperiencesController {
 
 private JobExperienceService jobExperienceService;
@@ -32,9 +35,9 @@ private JobExperienceService jobExperienceService;
 
 
 	@PostMapping("/add")
-	public Result add(@RequestBody JobExperience jobExperience) {
+	public Result add(@RequestBody JobExperienceDto jobExperienceDto) {
 		
-		return this.jobExperienceService.add(jobExperience);
+		return this.jobExperienceService.add(jobExperienceDto);
 		
 	}
 	
@@ -42,8 +45,8 @@ private JobExperienceService jobExperienceService;
 	
 	
 	@GetMapping("/getAll")
-public DataResult<List<JobExperience>> getAll() {
+public DataResult<List<JobExperience>> getByCvId(int cvId) {
 		
-		return this.jobExperienceService.getAll();
+		return this.jobExperienceService.getByCvId( cvId);
 	}
 }

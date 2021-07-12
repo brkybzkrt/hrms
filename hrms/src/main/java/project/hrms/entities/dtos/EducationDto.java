@@ -1,9 +1,5 @@
 package project.hrms.entities.dtos;
 
-
-
-
-
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,18 +11,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CvDto {
+public class EducationDto {
 
-	
+	@JsonIgnore
 	private int id;
-	private int candidateId;
-	private String photo;
-	private String githubLink;
-	private String linkedinLink;
-	private String description;
-	private LocalDate createdDate;
-	private LocalDate updatedDate;
-	
+	private int cvId;
+	private String schollName;
+	private LocalDate startedYear;
+	private LocalDate finishedYear;
 	
 	
 }
