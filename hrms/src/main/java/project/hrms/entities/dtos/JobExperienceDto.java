@@ -15,9 +15,8 @@ import lombok.NoArgsConstructor;
 public class JobExperienceDto {
 
 	
-	
-	@JsonIgnore
 	private int id;
+	
 	private int cvId;
 	
 	private String jobPlaceName;

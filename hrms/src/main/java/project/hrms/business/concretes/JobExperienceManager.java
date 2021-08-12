@@ -39,8 +39,11 @@ public class JobExperienceManager implements JobExperienceService {
 	public Result add(JobExperienceDto jobExperienceDto) {
 		Cv updatedCv=	this.cvDao.getOne(jobExperienceDto.getCvId());
 		
-		JobExperience jobExperience=(JobExperience) this.dtoConverterService.dtoClassConverter(updatedCv, JobExperience.class);
+		JobExperience jobExperience=(JobExperience) this.dtoConverterService.dtoClassConverter(jobExperienceDto, JobExperience.class);
+		jobExperience.setCreatedDate(LocalDate.now());
 		this.jobExperienceDao.save(jobExperience);
+		
+		
 		updatedCv.setLastUpdatedDate(LocalDate.now());
 		this.cvDao.save(updatedCv);
 		return new SuccessResult("İş deneyimi başarıyla eklendi."); 
@@ -52,18 +55,27 @@ public class JobExperienceManager implements JobExperienceService {
 	}
 
 	@Override
-	public Result update(int id, JobExperience jobExperience) {
+	public Result update(int id, JobExperienceDto jobExperienceDto) {
 		JobExperience updated= this.jobExperienceDao.getOne(id);
 		
-		updated.setFinishedYear(jobExperience.getFinishedYear());
-		updated.setJobPlaceName(jobExperience.getJobPlaceName());
-		updated.setJobPosition(jobExperience.getJobPosition());
-		updated.setStartedYear(jobExperience.getStartedYear());
-		updated.setCv(jobExperience.getCv());
+		JobExperience newJobExperience= (JobExperience) this.dtoConverterService.dtoClassConverter(jobExperienceDto, JobExperience.class);
+		
+		updated.setFinishedYear(newJobExperience.getFinishedYear());
+		updated.setJobPlaceName(newJobExperience.getJobPlaceName());
+		updated.setJobPosition(newJobExperience.getJobPosition());
+		updated.setStartedYear(newJobExperience.getStartedYear());
+		updated.setCv(newJobExperience.getCv());
 		
 		this.jobExperienceDao.save(updated);
 		
 		return new SuccessResult("İş deneyimi başarıyla güncellendi");
+	}
+
+	@Override
+	public DataResult<JobExperienceDto> getById(int jEId) {
+		JobExperience jobExp= this.jobExperienceDao.getOne(jEId);
+		
+		return new SuccessDataResult<JobExperienceDto>((JobExperienceDto) this.dtoConverterService.dtoClassConverter(jobExp, JobExperienceDto.class),"İş deneyimi getirildi.");
 	}
 
 }

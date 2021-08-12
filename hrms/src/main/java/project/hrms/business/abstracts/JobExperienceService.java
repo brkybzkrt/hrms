@@ -14,5 +14,7 @@ public interface JobExperienceService {
 	
 	DataResult<List<JobExperience>> getByCvId(int cvId);
 	
-	Result update(int id, JobExperience jobExperience);
+	DataResult<JobExperienceDto> getById(int jEId);
+	
+	Result update(int id, JobExperienceDto jobExperienceDto);
 }
