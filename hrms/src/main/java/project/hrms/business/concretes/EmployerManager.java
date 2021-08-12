@@ -1,8 +1,11 @@
 package project.hrms.business.concretes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -16,10 +19,14 @@ import project.hrms.core.utilities.results.Result;
 import project.hrms.core.utilities.results.SuccessDataResult;
 import project.hrms.core.utilities.results.SuccessResult;
 import project.hrms.dataAccess.abstracts.ConfirmedEmployerByEmployeeDao;
+import project.hrms.dataAccess.abstracts.ConfirmedEmployerUpdateByEmployeeDao;
 import project.hrms.dataAccess.abstracts.EmployerDao;
+import project.hrms.dataAccess.abstracts.EmployerUpdateDao;
 import project.hrms.dataAccess.abstracts.UserDao;
 import project.hrms.entities.concretes.ConfirmedEmployerByEmployee;
+import project.hrms.entities.concretes.ConfirmedEmployerUpdateByEmployee;
 import project.hrms.entities.concretes.Employer;
+import project.hrms.entities.concretes.EmployerUpdate;
 
 @Service
 public class EmployerManager implements EmployerService {
@@ -29,17 +36,21 @@ public class EmployerManager implements EmployerService {
 	private MailControl mailControl;
 	private EmailVerificationService emailVerificationService; 
 	private ConfirmedEmployerByEmployeeDao confirmedEmployerByEmployeeDao; 
-	
+	private PasswordEncoder passwordEncoder;
+	private EmployerUpdateDao  updateEmployerDao;
+	private ConfirmedEmployerUpdateByEmployeeDao confirmedEmployerUpdateByEmployeeDao; 
 	
 	@Autowired
-	public EmployerManager(EmployerDao employerDao,UserDao userDao,MailControl mailControl,EmailVerificationService emailVerificationService,ConfirmedEmployerByEmployeeDao confirmedEmployerByEmployeeDao) {
+	public EmployerManager(EmployerDao employerDao,UserDao userDao,MailControl mailControl,EmailVerificationService emailVerificationService,ConfirmedEmployerByEmployeeDao confirmedEmployerByEmployeeDao,EmployerUpdateDao  updateEmployerDao,ConfirmedEmployerUpdateByEmployeeDao confirmedEmployerUpdateByEmployeeDao) {
 		super();
 		this.employerDao = employerDao;
 		this.userDao=userDao;
 		this.mailControl=mailControl;
 		this.emailVerificationService=emailVerificationService;
 		this.confirmedEmployerByEmployeeDao=confirmedEmployerByEmployeeDao;
-		
+		this.passwordEncoder= new BCryptPasswordEncoder();
+		this.updateEmployerDao= updateEmployerDao;
+		this.confirmedEmployerUpdateByEmployeeDao=confirmedEmployerUpdateByEmployeeDao;
 	}
 
 
@@ -65,6 +76,7 @@ public class EmployerManager implements EmployerService {
 			
 			if(this.mailControl.checkEmailAddress(employer.getEmail(), employer.getWebAddress())) {
 				this.emailVerificationService.verification(employer);
+				employer.setPassword(this.passwordEncoder.encode(employer.getPassword()));
 				 this.employerDao.save(employer);
 				
 				 ConfirmedEmployerByEmployee confirmedEmployerByEmployee= new ConfirmedEmployerByEmployee();
@@ -89,20 +101,25 @@ public class EmployerManager implements EmployerService {
 
 
 	@Override
-	public Result update(int employerId, Employer employer) {
+	public Result update(int employerId,EmployerUpdate employerUpdate) {
 		
 		if(this.employerDao.existsById(employerId)) {
 			
-			Employer updatedEmployer= this.employerDao.getOne(employerId);
-			updatedEmployer.setCompanyName(employer.getCompanyName());
-			updatedEmployer.setEmail(employer.getEmail());
-			updatedEmployer.setConfirmedEmployerByEmployee(employer.getConfirmedEmployerByEmployee());
-			updatedEmployer.setPhoneNumber(employer.getPhoneNumber());
-			updatedEmployer.setWebAddress(employer.getWebAddress());
+			Employer getUpdate = this.employerDao.getOne(employerId);
+			
+			employerUpdate.setEmployer(getUpdate);
+			employerUpdate.setConfirmedStatus(false);
+			employerUpdate.setUpdateDate(LocalDate.now());
+			employerUpdate.setPassword(getUpdate.getPassword());
+			this.updateEmployerDao.save(employerUpdate);
 			
 			
-			this.employerDao.save(updatedEmployer);
-			return new SuccessResult("Güncelleme başarılı");
+			ConfirmedEmployerUpdateByEmployee confirmedEmployerUpdateByEmployee= new ConfirmedEmployerUpdateByEmployee();
+			confirmedEmployerUpdateByEmployee.setConfirmedStatus(false);
+			confirmedEmployerUpdateByEmployee.setEmployer(getUpdate);
+			this.confirmedEmployerUpdateByEmployeeDao.save(confirmedEmployerUpdateByEmployee);
+			
+			return new SuccessResult("Güncelleme isteği başarıyla onaya gönderildi");
 		}
 		
 		else {
@@ -114,11 +131,13 @@ public class EmployerManager implements EmployerService {
 		
 	}
 
+	
+	
 
 
 	@Override
 	public DataResult<Employer> getById(int id) {
-	return new SuccessDataResult<Employer>(this.employerDao.getOne(id));
+	return new SuccessDataResult<Employer>(this.employerDao.getOne(id),"iş veren getirildi");
 	}
 
 }

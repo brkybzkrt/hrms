@@ -28,6 +28,7 @@ import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.ErrorDataResult;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.entities.concretes.Employer;
+import project.hrms.entities.concretes.EmployerUpdate;
 
 @CrossOrigin
 @RestController
@@ -61,8 +62,8 @@ public class EmployersController {
 	
 	
 	@PutMapping("/updateEmployer")
-	public ResponseEntity<?> update(@RequestParam int employerId,@RequestBody Employer employer){
-		return ResponseEntity.ok(this.employerService.update(employerId,employer));
+	public ResponseEntity<?> update(@RequestParam int employerId,@RequestBody EmployerUpdate employerUpdate){
+		return ResponseEntity.ok(this.employerService.update(employerId,employerUpdate));
 		
 	}
 	

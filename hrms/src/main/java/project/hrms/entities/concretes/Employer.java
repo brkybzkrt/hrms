@@ -40,6 +40,17 @@ public class Employer extends User {
 	@OneToOne(mappedBy = "employer")
 	private ConfirmedEmployerByEmployee confirmedEmployerByEmployee;
 	
+	@JsonIgnore
+	@OneToOne(mappedBy = "employer")
+	private EmployerUpdate employerUpdate;
+	
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "employer")
+	private ConfirmedEmployerUpdateByEmployee confirmedEmployerUpdateByEmployee;
+	
+	
+	
 	public Employer(int id, String email,String password,String companyName, String webAddress, String phoneNumber) {
 		super(id,email,password);
 		this.companyName = companyName;
