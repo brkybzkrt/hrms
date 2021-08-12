@@ -13,10 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProgrammingLanguageDto {
 
-	@JsonIgnore
+	
 	private int id;
 	private int cvId;
 	private String programmingName;
+	
+	@JsonIgnore
 	private LocalDate createdDate;
 	
 }

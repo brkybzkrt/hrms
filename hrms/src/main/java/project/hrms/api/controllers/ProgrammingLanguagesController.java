@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import project.hrms.business.abstracts.ProgrammingLanguageService;
@@ -44,5 +46,17 @@ public class ProgrammingLanguagesController {
 public DataResult<List<ProgrammingLanguage>> getByCvId(int cvId) {
 		
 		return this.programmingLanguageService.getByCvId( cvId);
+	}
+	
+	
+	@PutMapping("/update")
+	public Result update(@RequestParam int id,@RequestBody ProgrammingLanguageDto programmingLanguageDto){
+		
+		return this.programmingLanguageService.update(id, programmingLanguageDto);
+	}
+	
+	@GetMapping("/getById")
+	public DataResult<ProgrammingLanguageDto> getById(int id) {
+		return this.programmingLanguageService.getById(id);
 	}
 }

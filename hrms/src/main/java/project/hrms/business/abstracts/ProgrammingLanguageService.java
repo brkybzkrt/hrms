@@ -15,5 +15,7 @@ Result add(ProgrammingLanguageDto programmingLanguageDto);
 	
 	DataResult< List<ProgrammingLanguage>>  getByCvId(int cvId);
 	
-	Result update(int id,ProgrammingLanguage programmingLanguage);
+	DataResult<ProgrammingLanguageDto> getById(int pLId);
+	
+	Result update(int id,ProgrammingLanguageDto programmingLanguageDto);
 }

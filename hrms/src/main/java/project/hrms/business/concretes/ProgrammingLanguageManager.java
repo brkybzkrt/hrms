@@ -37,8 +37,9 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService{
 	public Result add(ProgrammingLanguageDto programmingLanguageDto) {
 	Cv updatedCv=this.cvDao.getOne(programmingLanguageDto.getCvId());
 		
-	ProgrammingLanguage updatedProgrammingLanguage=(ProgrammingLanguage) this.dtoConverterService.dtoClassConverter(updatedCv,ProgrammingLanguage.class );
-		this.programmingLanguageDao.save(updatedProgrammingLanguage);
+	ProgrammingLanguage updatedProgrammingLanguage=(ProgrammingLanguage) this.dtoConverterService.dtoClassConverter(programmingLanguageDto,ProgrammingLanguage.class );
+	updatedProgrammingLanguage.setCreatedDate(LocalDate.now());	
+	this.programmingLanguageDao.save(updatedProgrammingLanguage);
 		
 		updatedCv.setLastUpdatedDate(LocalDate.now());
 		this.cvDao.save(updatedCv);
@@ -51,15 +52,22 @@ public class ProgrammingLanguageManager implements ProgrammingLanguageService{
 	}
 
 	@Override
-	public Result update(int id, ProgrammingLanguage programmingLanguage) {
+	public Result update(int id, ProgrammingLanguageDto programmingLanguageDto) {
 	  ProgrammingLanguage updated=	this.programmingLanguageDao.getOne(id);
 	  
+	  ProgrammingLanguage newProgrammingLanguage=(ProgrammingLanguage) this.dtoConverterService.dtoClassConverter(programmingLanguageDto, ProgrammingLanguage.class);
 	  
-	  updated.setProgrammingName(programmingLanguage.getProgrammingName());
+	  updated.setProgrammingName(newProgrammingLanguage.getProgrammingName());
 	  
 	  this.programmingLanguageDao.save(updated);
 	  
 	  return new SuccessResult("Teknoloji başarıyla güncellendi");
+	}
+
+	@Override
+	public DataResult<ProgrammingLanguageDto> getById(int pLId) {
+		ProgrammingLanguage programmingLan = this.programmingLanguageDao.getOne(pLId);
+		return new SuccessDataResult<ProgrammingLanguageDto>((ProgrammingLanguageDto) this.dtoConverterService.dtoClassConverter(programmingLan, ProgrammingLanguageDto.class),"Program dili getirildi.");
 	}
 
 }
