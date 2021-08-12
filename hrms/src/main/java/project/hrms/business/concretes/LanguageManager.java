@@ -46,17 +46,21 @@ public class LanguageManager implements LanguageService{
 	}
 
 	@Override
-	public DataResult<List<Language>>  getByCvId(int cvId) {
-		return new SuccessDataResult<List<Language>>(this.languageDao.findAllByCvId(cvId), "Yabancı diller getirildi");
+	public DataResult<List<LanguageDto>>  getByCvId(int cvId) {
+		return new SuccessDataResult<List<LanguageDto>>(this.dtoConverterService.dtoConverter(this.languageDao.findAllByCvId(cvId), LanguageDto.class) , "Yabancı diller getirildi");
 	}
 
 	@Override
-	public Result update(int id,Language language) {
+	public Result update(int id,LanguageDto newLanguage) {
 		
 		Language updatedLanguage=  this.languageDao.getOne(id);
 		
+		Language newLang= (Language) this.dtoConverterService.dtoClassConverter(newLanguage, Language.class);		
 		
-		updatedLanguage.setLanguageLevel(language.getLanguageLevel());
+		updatedLanguage.setLanguageLevel(newLang.getLanguageLevel());
+		updatedLanguage.setLanguageName(newLang.getLanguageName());
+		updatedLanguage.setCreatedDate(updatedLanguage.getCreatedDate());
+		updatedLanguage.setCv(updatedLanguage.getCv());
 		
 		
 		this.languageDao.save(updatedLanguage);
@@ -64,5 +68,12 @@ public class LanguageManager implements LanguageService{
 		return new SuccessResult("güncelleme başarılı");
 		
 	}
+
+	@Override
+	public DataResult<LanguageDto> getById(int id) {
+		return new SuccessDataResult<LanguageDto>((LanguageDto) this.dtoConverterService.dtoClassConverter(this.languageDao.getOne(id), LanguageDto.class)) ;
+	}
+	
+	
 
 }
