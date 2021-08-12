@@ -14,6 +14,7 @@ import project.hrms.business.required.EmailVerificationService;
 import project.hrms.business.required.MailControl;
 
 import project.hrms.business.required.UserValidService;
+import project.hrms.core.utilities.dtoConverter.DtoConverterService;
 import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.ErrorResult;
 import project.hrms.core.utilities.results.Result;
@@ -22,6 +23,7 @@ import project.hrms.core.utilities.results.SuccessResult;
 import project.hrms.dataAccess.abstracts.CandidateDao;
 import project.hrms.dataAccess.abstracts.UserDao;
 import project.hrms.entities.concretes.Candidate;
+import project.hrms.entities.dtos.CandidateProfileDto;
 
 
 @Service
@@ -34,11 +36,12 @@ public class CandidateManager implements CandidateService {
 	private MailControl mailControl;
 	private EmailVerificationService emailVerificationService; 
 	private PasswordEncoder passwordEncoder;
+	private DtoConverterService dtoConverterService;
 	
 	
 	
 	@Autowired
-	public CandidateManager(CandidateDao candidateDao,ActivationCodeService activationCodeService, UserDao userDao,@Qualifier("fakemernis") UserValidService userValidService, MailControl mailControl,EmailVerificationService emailVerificationService) {
+	public CandidateManager(CandidateDao candidateDao,ActivationCodeService activationCodeService, UserDao userDao,@Qualifier("fakemernis") UserValidService userValidService, MailControl mailControl,EmailVerificationService emailVerificationService,DtoConverterService dtoConverterService) {
 		super();
 		this.candidateDao = candidateDao;
 		this.activationCodeService=activationCodeService;
@@ -47,7 +50,7 @@ public class CandidateManager implements CandidateService {
 		this.mailControl=mailControl;
 		this.emailVerificationService=emailVerificationService;
 		this.passwordEncoder= new BCryptPasswordEncoder();
-		
+		this.dtoConverterService= dtoConverterService;
 		
 	}
 
@@ -88,6 +91,15 @@ public class CandidateManager implements CandidateService {
 			}
 		}
 		
+		
+	}
+
+
+	@Override
+	public DataResult<CandidateProfileDto> getById(int candidateId) {
+		
+		Candidate getCandidate =this.candidateDao.getOne(candidateId);
+		return new SuccessDataResult<CandidateProfileDto>((CandidateProfileDto) this.dtoConverterService.dtoClassConverter(getCandidate, CandidateProfileDto.class));
 		
 	}
 

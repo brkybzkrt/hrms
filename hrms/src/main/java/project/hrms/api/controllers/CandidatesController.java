@@ -25,6 +25,7 @@ import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.ErrorDataResult;
 
 import project.hrms.entities.concretes.Candidate;
+import project.hrms.entities.dtos.CandidateProfileDto;
 
 @CrossOrigin
 @RestController
@@ -46,6 +47,13 @@ public class CandidatesController {
 		
 		return this.candidateService.getAll();
 		
+	}
+	
+	
+	@GetMapping("getById")
+	public DataResult<CandidateProfileDto> getById(int candidateId) {
+		
+		return this.candidateService.getById(candidateId);
 	}
 	
 	@PostMapping("/add")
