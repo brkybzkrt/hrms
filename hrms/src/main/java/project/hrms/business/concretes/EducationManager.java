@@ -51,18 +51,27 @@ public class EducationManager implements EducationService{
 	}
 
 	@Override
-	public Result update(int id, Education education) {
+	public Result update(int id, EducationDto educationDto) {
 		Education updateEducation= this.educationDao.getOne(id);
 		
-		updateEducation.setSchollName(education.getSchollName());
-		updateEducation.setStartedYear(education.getStartedYear());
-		updateEducation.setFinishedYear(education.getFinishedYear());
-		updateEducation.setCv(education.getCv());
+		Education newEducation= (Education) this.dtoConverterService.dtoClassConverter( educationDto, Education.class);
+		updateEducation.setSchollName(newEducation.getSchollName());
+		updateEducation.setStartedYear(newEducation.getStartedYear());
+		updateEducation.setFinishedYear(newEducation.getFinishedYear());
+		updateEducation.setCv(newEducation.getCv());
 	
 		this.educationDao.save(updateEducation);
 		
 		return new SuccessResult("Eğitim başarıyla güncellendi");
 	
+	}
+
+	@Override
+	public DataResult<EducationDto> getById(int educationId) {
+		Education edu = this.educationDao.getOne(educationId);
+		
+		return new SuccessDataResult<EducationDto>((EducationDto) this.dtoConverterService.dtoClassConverter(edu, EducationDto.class)); 
+		
 	}
 
 }

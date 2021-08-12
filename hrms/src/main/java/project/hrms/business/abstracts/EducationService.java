@@ -11,7 +11,9 @@ public interface EducationService {
 
 	Result add(EducationDto educationDto);
 	
-	Result update(int id,Education education);
+	Result update(int id,EducationDto educationDto);
 	
-	DataResult< List<Education>> getAllByCvId(int cvId);
+	DataResult<EducationDto> getById(int educationId);
+	
+	DataResult<List<Education>> getAllByCvId(int cvId);
 }

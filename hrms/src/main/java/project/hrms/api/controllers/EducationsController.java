@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,5 +46,18 @@ public class EducationsController {
 	public DataResult<List<Education>> getAllByCvId(@RequestParam int cvId) {
 		
 		return this.educationService.getAllByCvId(cvId);
+	}
+
+	@GetMapping("/getById")
+	public DataResult<EducationDto> getById(@RequestParam int educationId) {
+		
+		return this.educationService.getById(educationId);
+	}
+
+	
+	@PutMapping("/update")
+	public Result update(@RequestParam int id,@RequestBody EducationDto educationDto) {
+		
+		return this.educationService.update(id, educationDto);
 	}
 }
