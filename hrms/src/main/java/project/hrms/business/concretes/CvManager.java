@@ -65,24 +65,28 @@ public class CvManager implements CvService {
 	}
 
 	@Override
-	public DataResult<List<CvDto>> getByCandidate_Id(int candidateId) {
-		return new SuccessDataResult<List<CvDto>>(this.dtoConverterService.dtoConverter(this.cvDao.getByCandidate_Id(candidateId), CvDto.class),"cv getirildi" );
+	public DataResult<List<Cv>> getByCandidate_Id(int candidateId) {
+		
+		return new SuccessDataResult<List<Cv>>(this.cvDao.getByCandidate_Id(candidateId));
 	}
 
 	@Override
-	public Result update(int cvId, Cv cv) {
-		if(this.cvDao.existsById(cvId)) {
+	public Result update(int candidateId, CvDto cvDto) {
+		if(this.cvDao.existsByCandidate_Id(candidateId)) {
 			
-			Cv updateCv=this.cvDao.getOne(cvId);
+			Cv getCv=(Cv) this.dtoConverterService.dtoClassConverter(cvDto, Cv.class);
 			
-			updateCv.setDescription(cv.getDescription());
-			updateCv.setGithubLink(cv.getGithubLink());
-			updateCv.setLinkedinLink(cv.getLinkedinLink());
+			Cv updateCv=this.cvDao.getOne(cvDto.getId());
 			
-			updateCv.setEducations(cv.getEducations());
-			updateCv.setJobExperiences(cv.getJobExperiences());
-			updateCv.setLanguages(cv.getLanguages());
-			updateCv.setProgrammingLanguages(cv.getProgrammingLanguages());
+			
+			updateCv.setDescription(getCv.getDescription());
+			updateCv.setGithubLink(getCv.getGithubLink());
+			updateCv.setLinkedinLink(getCv.getLinkedinLink());
+			
+			updateCv.setEducations(getCv.getEducations());
+			updateCv.setJobExperiences(getCv.getJobExperiences());
+			updateCv.setLanguages(getCv.getLanguages());
+			updateCv.setProgrammingLanguages(getCv.getProgrammingLanguages());
 			
 			updateCv.setLastUpdatedDate(LocalDate.now());
 			
@@ -96,6 +100,18 @@ public class CvManager implements CvService {
 			
 		}
 	}
+
+	@Override
+	public DataResult<CvDto> getCvByCandidate(int candidateId) {
+		return new SuccessDataResult<CvDto>((CvDto) this.dtoConverterService.dtoClassConverter(this.cvDao.findByCandidate_Id(candidateId), CvDto.class));
+	}
+
+	@Override
+	public boolean existsByCandidateId(int candidateId) {
+		return this.cvDao.existsByCandidate_Id(candidateId);
+	}
+
+	
 
 	
 	

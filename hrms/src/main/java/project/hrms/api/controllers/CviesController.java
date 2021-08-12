@@ -57,17 +57,30 @@ public class CviesController {
 	}
 	
 	@GetMapping("/getByCandidateId")
-	public DataResult<List<CvDto>>  getByCandidateId(@RequestParam int candidateId){
+	public DataResult<List<Cv>>  getByCandidateId(@RequestParam int candidateId){
 		
 		return this.cvService.getByCandidate_Id(candidateId);
 		
 	}
 	
+//	@GetMapping("/getWithCandidateId")
+//	public DataResult<CvDto> getCvByCandidate(int candidateId){
+//		
+//		return this.cvService.getCvByCandidate(candidateId);
+//	}
+	
+	
 	
 	@PutMapping("/updateCv")
-	public Result update(@RequestParam int cvId,@RequestBody Cv cv) {
+	public Result update(@RequestParam int cvId,@RequestBody CvDto cv) {
 		
 		return this.cvService.update(cvId, cv);
+	}
+	
+	
+	@GetMapping("/existsByCandidateId")
+	public boolean existsByCandidateId(@RequestParam int candidateId) {
+		return this.cvService.existsByCandidateId(candidateId);
 	}
 	
 }
