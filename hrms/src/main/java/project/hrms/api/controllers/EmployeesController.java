@@ -3,6 +3,9 @@ package project.hrms.api.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,6 +59,12 @@ public class EmployeesController {
 	public Result update(@RequestParam int employeeId,@RequestBody Employee employee) {
 		
 		return this.employeeService.update(employeeId, employee);
+	}
+	
+	@GetMapping("/getAllWithPageable")
+	public DataResult<Page<Employee>> findAllWithPageable(@RequestParam(required = false,name = "firstName") String firstName,@RequestParam(required = false,name = "companyEmail") String companyEmail,@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize){
+		
+		return this.employeeService.findAllWithPageable(firstName,companyEmail,pageNumber,pageSize);
 	}
 	
 }

@@ -8,6 +8,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -21,7 +22,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","confirmedEmployerByEmployees"})  
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","confirmedEmployerByEmployees,confirmedEmployerUpdateByEmployee"})  
+
 public class Employee extends User{
 
 	
@@ -36,8 +38,13 @@ public class Employee extends User{
 	@Column(name="company_email")
 	private String companyEmail;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "employee")
 	private List<ConfirmedEmployerByEmployee> confirmedEmployerByEmployees;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "employee")
+	private List<ConfirmedEmployerUpdateByEmployee> confirmedEmployerUpdateByEmployee;
 	
 	
 	public Employee(int id, String firstName, String lastName, String email,String password) {
